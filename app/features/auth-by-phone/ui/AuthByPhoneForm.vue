@@ -27,17 +27,20 @@ async function submitPhone() {
     }
 
     loading.value = true
-    await new Promise((resolve) => setTimeout(resolve, 400))
-    requestCode(phone.value)
-    step.value = 'code'
-    loading.value = false
-
-    toast.add({
-        title: 'Код отправлен',
-        description: 'Для демо введите код 1234',
-        color: 'success',
-        icon: 'i-lucide-message-circle',
-    })
+    try {
+        await requestCode(phone.value)
+        step.value = 'code'
+        toast.add({
+            title: 'Код отправлен',
+            description: 'Для демо введите код 1234',
+            color: 'success',
+            icon: 'i-lucide-message-circle',
+        })
+    } catch {
+        error.value = 'Не удалось отправить код'
+    } finally {
+        loading.value = false
+    }
 }
 
 async function submitCode() {
@@ -50,8 +53,7 @@ async function submitCode() {
     }
 
     loading.value = true
-    await new Promise((resolve) => setTimeout(resolve, 350))
-    const result = verifyCode(code)
+    const result = await verifyCode(code)
     loading.value = false
 
     if (!result.ok) {

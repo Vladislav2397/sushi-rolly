@@ -11,8 +11,8 @@ const links = computed(() => [
     { label: 'Заказы', to: '/orders', active: route.path.startsWith('/orders') },
 ])
 
-function onLogout() {
-    logout()
+async function onLogout() {
+    await logout()
     navigateTo('/')
 }
 </script>

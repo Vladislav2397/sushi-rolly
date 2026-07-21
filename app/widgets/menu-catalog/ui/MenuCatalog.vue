@@ -1,22 +1,38 @@
 <script setup lang="ts">
-import {
-    MENU_CATEGORY_LABEL,
-    MENU_DRINKS,
-    MENU_ROLLS,
-    MENU_SETS,
-    MENU_SUSHI,
-} from '@entities/menu'
+import { MENU_CATEGORY_LABEL } from '@entities/menu'
+import { api, type ApiMenuResponse } from '@shared/api'
 
-const sections = [
-    { id: 'sets', label: MENU_CATEGORY_LABEL.set, items: MENU_SETS, type: 'set' as const },
-    { id: 'sushi', label: MENU_CATEGORY_LABEL.sushi, items: MENU_SUSHI, type: 'product' as const },
-    { id: 'rolls', label: MENU_CATEGORY_LABEL.roll, items: MENU_ROLLS, type: 'product' as const },
-    { id: 'drinks', label: MENU_CATEGORY_LABEL.drink, items: MENU_DRINKS, type: 'product' as const },
-]
+const { data, pending, error, refresh } = await useAsyncData(
+    'menu',
+    () => api<ApiMenuResponse>('/api/menu'),
+    { server: false },
+)
+
+const sections = computed(() => {
+    if (!data.value) {
+        return []
+    }
+
+    return [
+        { id: 'sets', label: MENU_CATEGORY_LABEL.set, items: data.value.sets, type: 'set' as const },
+        { id: 'sushi', label: MENU_CATEGORY_LABEL.sushi, items: data.value.sushi, type: 'product' as const },
+        { id: 'rolls', label: MENU_CATEGORY_LABEL.roll, items: data.value.rolls, type: 'product' as const },
+        { id: 'drinks', label: MENU_CATEGORY_LABEL.drink, items: data.value.drinks, type: 'product' as const },
+    ]
+})
 </script>
 
 <template>
-    <div class="space-y-10">
+    <div v-if="pending" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <USkeleton v-for="n in 6" :key="n" class="h-72 rounded-3xl" />
+    </div>
+
+    <div v-else-if="error" class="rounded-3xl bg-white px-6 py-12 text-center ring-1 ring-ink-200/80">
+        <p class="text-ink-600">Не удалось загрузить меню</p>
+        <UButton class="mt-4" @click="refresh()">Повторить</UButton>
+    </div>
+
+    <div v-else class="space-y-10">
         <section
             v-for="section in sections"
             :id="section.id"

@@ -1,11 +1,13 @@
-export default defineNuxtRouteMiddleware((to) => {
-    // Сессия в localStorage — проверка только на клиенте
+export default defineNuxtRouteMiddleware(async (to) => {
     if (import.meta.server) {
         return
     }
 
     const store = useUserStore()
-    store.hydrate()
+
+    if (!store.authReady.value) {
+        await store.fetchMe()
+    }
 
     if (!store.isAuthenticated.value) {
         return navigateTo({

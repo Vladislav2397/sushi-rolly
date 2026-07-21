@@ -1,5 +1,4 @@
-export default defineNuxtPlugin(() => {
-    useUserStore().hydrate()
+export default defineNuxtPlugin(async () => {
     useCartStore().hydrate()
-    useOrderStore().hydrate()
+    await useUserStore().fetchMe()
 })

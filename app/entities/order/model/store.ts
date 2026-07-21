@@ -1,19 +1,16 @@
-import type { CartItem } from '@entities/cart'
 import type { Order, OrderFulfillment } from './types'
-import { RESTAURANT, readStorage, uid, writeStorage } from '@shared'
-
-const STORAGE_KEY = 'sushi-rolly:orders'
+import type { CartItem } from '@entities/cart'
+import {
+    api,
+    type ApiCreateOrderBody,
+    type ApiCreateOrderResponse,
+    type ApiOrdersResponse,
+} from '@shared/api'
+import { RESTAURANT } from '@shared'
 
 export function useOrderStore() {
     const orders = useState<Order[]>('orders', () => [])
-
-    function persist() {
-        writeStorage(STORAGE_KEY, orders.value)
-    }
-
-    function hydrate() {
-        orders.value = readStorage<Order[]>(STORAGE_KEY, [])
-    }
+    const ordersLoaded = useState('orders-loaded', () => false)
 
     function getOrdersByUser(userId: string) {
         return computed(() =>
@@ -33,7 +30,13 @@ export function useOrderStore() {
         return RESTAURANT.deliveryFee
     }
 
-    function createOrder(input: {
+    async function fetchOrders() {
+        const data = await api<ApiOrdersResponse>('/api/orders')
+        orders.value = data.orders
+        ordersLoaded.value = true
+    }
+
+    async function createOrder(input: {
         userId: string
         phone: string
         items: CartItem[]
@@ -41,35 +44,33 @@ export function useOrderStore() {
         address: string | null
         comment: string
     }) {
-        const subtotal = input.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-        const deliveryFee = calcDeliveryFee(subtotal, input.fulfillment)
-
-        const order: Order = {
-            id: uid('order'),
-            userId: input.userId,
-            phone: input.phone,
-            items: input.items.map((item) => ({ ...item })),
+        const body: ApiCreateOrderBody = {
+            items: input.items.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+            })),
             fulfillment: input.fulfillment,
-            address: input.fulfillment === 'delivery' ? input.address : null,
-            comment: input.comment.trim(),
-            subtotal,
-            deliveryFee,
-            total: subtotal + deliveryFee,
-            status: 'new',
-            createdAt: new Date().toISOString(),
+            address: input.address,
+            comment: input.comment,
         }
 
-        orders.value = [order, ...orders.value]
-        persist()
+        const data = await api<ApiCreateOrderResponse>('/api/orders', {
+            method: 'POST',
+            body,
+        })
 
-        return order
+        orders.value = [data.order, ...orders.value]
+        ordersLoaded.value = true
+
+        return data.order
     }
 
     return {
         orders,
-        hydrate,
+        ordersLoaded,
         getOrdersByUser,
         calcDeliveryFee,
+        fetchOrders,
         createOrder,
     }
 }

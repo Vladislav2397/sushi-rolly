@@ -6,6 +6,11 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     modules: ['@nuxt/ui'],
     css: ['~/assets/css/main.css'],
+    runtimeConfig: {
+        databaseUrl: process.env.DATABASE_URL || '',
+        sessionSecret: process.env.SESSION_SECRET || 'dev-secret',
+        demoOtpCode: process.env.DEMO_OTP_CODE || '1234',
+    },
     alias: {
         '@shared': fileURLToPath(new URL('./app/shared', import.meta.url)),
         '@entities': fileURLToPath(new URL('./app/entities', import.meta.url)),

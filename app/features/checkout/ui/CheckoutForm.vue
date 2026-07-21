@@ -50,28 +50,31 @@ async function submit() {
     }
 
     loading.value = true
-    await new Promise((resolve) => setTimeout(resolve, 450))
+    try {
+        const order = await createOrder({
+            userId: user.value.id,
+            phone: user.value.phone,
+            items: items.value,
+            fulfillment: fulfillment.value,
+            address: address.value.trim(),
+            comment: comment.value,
+        })
 
-    const order = createOrder({
-        userId: user.value.id,
-        phone: user.value.phone,
-        items: items.value,
-        fulfillment: fulfillment.value,
-        address: address.value.trim(),
-        comment: comment.value,
-    })
+        clear()
 
-    clear()
-    loading.value = false
+        toast.add({
+            title: 'Заказ оформлен',
+            description: `Номер ${order.id.slice(-6).toUpperCase()}`,
+            color: 'success',
+            icon: 'i-lucide-check-circle',
+        })
 
-    toast.add({
-        title: 'Заказ оформлен',
-        description: `Номер ${order.id.slice(-6).toUpperCase()}`,
-        color: 'success',
-        icon: 'i-lucide-check-circle',
-    })
-
-    await router.push('/orders')
+        await router.push('/orders')
+    } catch {
+        error.value = 'Не удалось оформить заказ'
+    } finally {
+        loading.value = false
+    }
 }
 </script>
 

@@ -1,63 +1,65 @@
 import type { User } from './types'
-import {
-    DEMO_OTP_CODE,
-    normalizePhone,
-    readStorage,
-    removeStorage,
-    uid,
-    writeStorage,
-} from '@shared'
-
-const STORAGE_KEY = 'sushi-rolly:user'
+import { api, type ApiUserResponse } from '@shared/api'
+import { normalizePhone } from '@shared/lib/format'
 
 export function useUserStore() {
     const user = useState<User | null>('user', () => null)
     const pendingPhone = useState<string | null>('auth-pending-phone', () => null)
+    const authReady = useState('auth-ready', () => false)
 
     const isAuthenticated = computed(() => Boolean(user.value))
 
-    function hydrate() {
-        user.value = readStorage<User | null>(STORAGE_KEY, null)
+    async function fetchMe() {
+        try {
+            const data = await api<ApiUserResponse>('/api/auth/me')
+            user.value = data.user
+        } catch {
+            user.value = null
+        } finally {
+            authReady.value = true
+        }
     }
 
-    function requestCode(phone: string) {
-        pendingPhone.value = normalizePhone(phone)
+    async function requestCode(phone: string) {
+        const normalized = normalizePhone(phone)
+        await api('/api/auth/request-code', {
+            method: 'POST',
+            body: { phone: normalized },
+        })
+        pendingPhone.value = normalized
         return { ok: true as const }
     }
 
-    function verifyCode(code: string) {
+    async function verifyCode(code: string) {
         if (!pendingPhone.value) {
             return { ok: false as const, error: 'Сначала укажите номер телефона' }
         }
 
-        if (code !== DEMO_OTP_CODE) {
+        try {
+            const data = await api<{ user: User }>('/api/auth/verify-code', {
+                method: 'POST',
+                body: { phone: pendingPhone.value, code },
+            })
+            user.value = data.user
+            pendingPhone.value = null
+            return { ok: true as const }
+        } catch {
             return { ok: false as const, error: 'Неверный код. Для демо используйте 1234' }
         }
-
-        const nextUser: User = {
-            id: uid('user'),
-            phone: pendingPhone.value,
-            createdAt: new Date().toISOString(),
-        }
-
-        user.value = nextUser
-        pendingPhone.value = null
-        writeStorage(STORAGE_KEY, nextUser)
-
-        return { ok: true as const }
     }
 
-    function logout() {
+    async function logout() {
+        await api('/api/auth/logout', { method: 'POST' })
         user.value = null
         pendingPhone.value = null
-        removeStorage(STORAGE_KEY)
     }
 
     return {
         user,
         pendingPhone,
+        authReady,
         isAuthenticated,
-        hydrate,
+        fetchMe,
         requestCode,
         verifyCode,
         logout,
