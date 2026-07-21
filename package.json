@@ -1,0 +1,21 @@
+{
+    "name": "sushi-rolly",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "format": "prettier --write .",
+        "postinstall": "nuxt prepare"
+    },
+    "dependencies": {
+        "nuxt": "^4.5.0",
+        "vue": "^3.5.40",
+        "vue-router": "^5.2.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.9.5"
+    }
+}
