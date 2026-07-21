@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme static {
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand-50: #fff4f1;
+    --color-brand-100: #ffe6df;
+    --color-brand-200: #ffc9ba;
+    --color-brand-300: #ffa08a;
+    --color-brand-400: #ff7354;
+    --color-brand-500: #f24d2c;
+    --color-brand-600: #d93414;
+    --color-brand-700: #b42a11;
+    --color-brand-800: #952614;
+    --color-brand-900: #7b2416;
+    --color-brand-950: #430f08;
+
+    --color-ink-50: #f4f6f7;
+    --color-ink-100: #e3e8ea;
+    --color-ink-200: #c9d3d7;
+    --color-ink-300: #a4b4bb;
+    --color-ink-400: #778e98;
+    --color-ink-500: #5c737d;
+    --color-ink-600: #4f6069;
+    --color-ink-700: #445158;
+    --color-ink-800: #3c464c;
+    --color-ink-900: #353d42;
+    --color-ink-950: #1a2024;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-950);
+}
+
+.font-display {
+    font-family: var(--font-display);
+}
+
+.page-shell {
+    background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgb(242 77 44 / 0.12), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 95% 5%, rgb(16 185 129 / 0.1), transparent 50%),
+        linear-gradient(180deg, var(--color-ink-50) 0%, #eef2f3 100%);
+}
+
+.hero-surface {
+    background:
+        linear-gradient(135deg, rgb(26 32 36 / 0.92), rgb(53 61 66 / 0.85)),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}

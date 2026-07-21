@@ -1,75 +1,37 @@
-# Nuxt Minimal Starter
+# Sushi Rolly
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Клиентское приложение сервиса быстрого питания: меню сетов, корзина, заказ с самовывозом/доставкой и история заказов.
 
-## Setup
+Стек: **Nuxt 4**, **Nuxt UI**, **FSD**.
 
-Make sure to install dependencies:
+## Запуск
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Приложение: [http://localhost:3000](http://localhost:3000)
 
-Build the application for production:
+## Функционал
 
-```bash
-# npm
-npm run build
+- Авторизация по телефону (демо-код `1234`)
+- Меню из 6 сетов (№1–№6)
+- Суши, роллы и напитки поштучно
+- Корзина
+- Оформление: самовывоз или доставка
+- Список своих заказов
 
-# pnpm
-pnpm build
+Данные пользователя, корзины и заказов хранятся в `localStorage` (без бэкенда).
 
-# yarn
-yarn build
+## Структура (FSD)
 
-# bun
-bun run build
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+app/
+  pages/          # слой pages (маршруты Nuxt)
+  widgets/        # header, menu-catalog, cart-panel, orders-list
+  features/       # auth-by-phone, add-to-cart, checkout
+  entities/       # user, menu, cart, order
+  shared/         # config, lib
+  layouts/
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
