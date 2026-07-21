@@ -1,31 +1,9 @@
-import type { MenuCategory } from '@entities/menu'
+import type { MenuCategory, MenuProduct, MenuSet } from '@entities/menu'
 import type { Order, OrderFulfillment, OrderStatus } from '@entities/order'
 import type { User } from '@entities/user'
 
-export interface ApiMenuSet {
-    id: string
-    category: 'set'
-    number: number
-    title: string
-    description: string
-    pieces: number
-    weight: number
-    price: number
-    tags: string[]
-    accent: string
-}
-
-export interface ApiMenuProduct {
-    id: string
-    category: 'sushi' | 'roll' | 'drink'
-    title: string
-    description: string
-    price: number
-    tags: string[]
-    pieces?: number
-    weight?: number
-    volume?: number
-}
+export type ApiMenuSet = MenuSet
+export type ApiMenuProduct = MenuProduct
 
 export interface ApiMenuResponse {
     sets: ApiMenuSet[]

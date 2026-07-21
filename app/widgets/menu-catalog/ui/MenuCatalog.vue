@@ -2,10 +2,8 @@
 import { MENU_CATEGORY_LABEL } from '@entities/menu'
 import { api, type ApiMenuResponse } from '@shared/api'
 
-const { data, pending, error, refresh } = await useAsyncData(
-    'menu',
-    () => api<ApiMenuResponse>('/api/menu'),
-    { server: false },
+const { data, pending, error, refresh } = await useAsyncData('menu', () =>
+    api<ApiMenuResponse>('/api/menu'),
 )
 
 const sections = computed(() => {

@@ -45,7 +45,11 @@ export default defineEventHandler(async (event) => {
     let [user] = await db.select().from(schema.users).where(eq(schema.users.phone, phone)).limit(1)
 
     if (!user) {
-        ;[user] = await db.insert(schema.users).values({ phone }).returning()
+        const [created] = await db.insert(schema.users).values({ phone }).returning()
+        if (!created) {
+            throw createError({ statusCode: 500, statusMessage: 'Failed to create user' })
+        }
+        user = created
     }
 
     const token = createSessionToken()

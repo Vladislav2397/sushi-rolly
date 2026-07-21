@@ -97,6 +97,10 @@ export default defineEventHandler(async (event) => {
         })
         .returning()
 
+    if (!order) {
+        throw createError({ statusCode: 500, statusMessage: 'Failed to create order' })
+    }
+
     await db.insert(schema.orderItems).values(
         orderLines.map(({ product, quantity }) => ({
             orderId: order.id,

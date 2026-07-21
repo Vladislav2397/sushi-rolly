@@ -8,7 +8,7 @@ const { pendingPhone, requestCode, verifyCode } = useUserStore()
 
 const step = ref<'phone' | 'code'>(pendingPhone.value ? 'code' : 'phone')
 const phone = ref('')
-const codeDigits = ref<string[]>([])
+const codeDigits = ref<number[]>([])
 const loading = ref(false)
 const error = ref('')
 

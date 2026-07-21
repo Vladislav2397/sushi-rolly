@@ -3,7 +3,7 @@ export type MenuCategory = 'set' | 'sushi' | 'roll' | 'drink'
 export interface MenuSet {
     id: string
     category: 'set'
-    number: 1 | 2 | 3 | 4 | 5 | 6
+    number: number
     title: string
     description: string
     pieces: number
