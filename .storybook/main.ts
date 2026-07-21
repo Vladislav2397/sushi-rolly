@@ -1,0 +1,37 @@
+import { fileURLToPath, URL } from 'node:url'
+import type { StorybookConfig } from '@storybook/vue3-vite'
+import tailwindcss from '@tailwindcss/vite'
+import { mergeConfig } from 'vite'
+
+const config: StorybookConfig = {
+    stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+    addons: [
+        '@chromatic-com/storybook',
+        '@storybook/addon-vitest',
+        '@storybook/addon-a11y',
+        '@storybook/addon-docs',
+    ],
+    framework: {
+        name: '@storybook/vue3-vite',
+        options: {},
+    },
+    async viteFinal(config) {
+        return mergeConfig(config, {
+            plugins: [tailwindcss()],
+            resolve: {
+                alias: {
+                    '@shared': fileURLToPath(new URL('../app/shared', import.meta.url)),
+                    '@entities': fileURLToPath(new URL('../app/entities', import.meta.url)),
+                    '@features': fileURLToPath(new URL('../app/features', import.meta.url)),
+                    '@widgets': fileURLToPath(new URL('../app/widgets', import.meta.url)),
+                    '@pages': fileURLToPath(new URL('../app/pages', import.meta.url)),
+                    'vike/client/router': fileURLToPath(
+                        new URL('./mocks/vike-router.ts', import.meta.url),
+                    ),
+                },
+            },
+        })
+    },
+}
+
+export default config
