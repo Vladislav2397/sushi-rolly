@@ -5,8 +5,12 @@ import { useCartStore } from '@entities/cart'
 import { useOrderStore, type OrderFulfillment } from '@entities/order'
 import { formatPrice, RESTAURANT } from '@shared'
 
+const emit = defineEmits<{
+    success: []
+    'need-auth': []
+}>()
+
 const toast = useToast()
-const router = useRouter()
 const { user } = useUserStore()
 const { items, totalPrice, isEmpty, clear } = useCartStore()
 const { createOrder, calcDeliveryFee } = useOrderStore()
@@ -37,7 +41,7 @@ async function submit() {
     error.value = ''
 
     if (!user.value) {
-        await router.push({ path: '/auth', query: { redirect: '/checkout' } })
+        emit('need-auth')
         return
     }
 
@@ -71,7 +75,7 @@ async function submit() {
             icon: 'i-lucide-check-circle',
         })
 
-        await router.push('/orders')
+        emit('success')
     } catch {
         error.value = 'Не удалось оформить заказ'
     } finally {

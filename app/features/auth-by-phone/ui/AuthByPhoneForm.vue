@@ -2,9 +2,11 @@
 import { useUserStore } from '@entities/user'
 import { formatPhone, isValidPhone } from '@shared'
 
+const emit = defineEmits<{
+    success: []
+}>()
+
 const toast = useToast()
-const route = useRoute()
-const router = useRouter()
 const { pendingPhone, requestCode, verifyCode } = useUserStore()
 
 const step = ref<'phone' | 'code'>(pendingPhone.value ? 'code' : 'phone')
@@ -69,8 +71,7 @@ async function submitCode() {
         icon: 'i-lucide-check',
     })
 
-    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
-    await router.push(redirect)
+    emit('success')
 }
 
 function backToPhone() {

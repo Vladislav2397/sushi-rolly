@@ -17,6 +17,14 @@ watchEffect(() => {
         navigateTo('/cart')
     }
 })
+
+function onNeedAuth() {
+    return navigateTo({ path: '/auth', query: { redirect: '/checkout' } })
+}
+
+function onSuccess() {
+    return navigateTo('/orders')
+}
 </script>
 
 <template>
@@ -26,6 +34,9 @@ watchEffect(() => {
             <p class="mt-1 text-sm text-ink-500">Самовывоз или доставка по адресу</p>
         </div>
 
-        <CheckoutForm />
+        <CheckoutForm
+            @need-auth="onNeedAuth"
+            @success="onSuccess"
+        />
     </div>
 </template>

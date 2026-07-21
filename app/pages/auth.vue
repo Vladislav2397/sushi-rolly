@@ -13,16 +13,20 @@ useSeoMeta({
 const { isAuthenticated } = useUserStore()
 const route = useRoute()
 
+function redirectAfterAuth() {
+    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+    return navigateTo(redirect)
+}
+
 watchEffect(() => {
     if (isAuthenticated.value) {
-        const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
-        navigateTo(redirect)
+        redirectAfterAuth()
     }
 })
 </script>
 
 <template>
     <div class="flex min-h-[70vh] items-center justify-center py-4">
-        <AuthByPhoneForm />
+        <AuthByPhoneForm @success="redirectAfterAuth" />
     </div>
 </template>
