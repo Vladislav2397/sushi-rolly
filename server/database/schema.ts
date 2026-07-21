@@ -43,6 +43,23 @@ export const sessions = pgTable('sessions', {
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 })
 
+export const admins = pgTable('admins', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    email: varchar('email', { length: 255 }).notNull().unique(),
+    passwordHash: text('password_hash').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+})
+
+export const adminSessions = pgTable('admin_sessions', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    adminId: uuid('admin_id')
+        .notNull()
+        .references(() => admins.id, { onDelete: 'cascade' }),
+    token: varchar('token', { length: 64 }).notNull().unique(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+})
+
 export const menuItems = pgTable('menu_items', {
     id: varchar('id', { length: 32 }).primaryKey(),
     category: menuCategoryEnum('category').notNull(),
@@ -88,6 +105,7 @@ export const orderItems = pgTable('order_items', {
 })
 
 export type DbUser = typeof users.$inferSelect
+export type DbAdmin = typeof admins.$inferSelect
 export type DbMenuItem = typeof menuItems.$inferSelect
 export type DbOrder = typeof orders.$inferSelect
 export type DbOrderItem = typeof orderItems.$inferSelect

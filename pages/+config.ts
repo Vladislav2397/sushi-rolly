@@ -3,7 +3,7 @@ import vikeVue from 'vike-vue/config'
 
 export default {
     extends: [vikeVue],
-    passToClient: ['user'],
+    passToClient: ['user', 'admin'],
 } satisfies Config
 
 declare global {

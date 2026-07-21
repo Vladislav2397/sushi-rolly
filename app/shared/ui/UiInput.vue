@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import UiIcon from './UiIcon.vue'
 import { toIconifyName } from './iconName'
 
-const model = defineModel<string>({ default: '' })
+const model = defineModel<string | number | null>({ default: '' })
 
 const props = withDefaults(
     defineProps<{
