@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { MenuCatalog } from '@widgets/menu-catalog'
 import { RESTAURANT } from '@shared'
 
 useSeoMeta({

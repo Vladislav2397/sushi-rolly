@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MENU_CATEGORY_LABEL } from '@entities/menu'
+import { AddToCartProductCard, AddToCartSetCard } from '@features/add-to-cart'
 import { api, type ApiMenuResponse } from '@shared/api'
 
 const { data, pending, error, refresh } = await useAsyncData('menu', () =>

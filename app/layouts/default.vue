@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AppHeader } from '@widgets/header'
 </script>
 
 <template>

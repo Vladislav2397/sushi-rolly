@@ -1,3 +1,5 @@
+import { useUserStore } from '@entities/user'
+
 export default defineNuxtRouteMiddleware(async (to) => {
     if (import.meta.server) {
         return

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { MenuProduct } from '@entities/menu'
+import { MenuProductCard, type MenuProduct } from '@entities/menu'
+import { useCartStore } from '@entities/cart'
 
 const props = defineProps<{
     product: MenuProduct

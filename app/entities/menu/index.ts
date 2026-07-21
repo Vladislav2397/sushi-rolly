@@ -12,3 +12,5 @@ export {
     MENU_CATEGORY_ICON,
     MENU_CATEGORY_ACCENT,
 } from './model/category'
+export { default as MenuProductCard } from './ui/MenuProductCard.vue'
+export { default as MenuSetCard } from './ui/MenuSetCard.vue'

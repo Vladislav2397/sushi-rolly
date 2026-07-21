@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useCartStore } from '@entities/cart'
+import { CheckoutForm } from '@features/checkout'
+
 definePageMeta({
     middleware: 'auth',
 })

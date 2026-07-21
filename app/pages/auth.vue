@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useUserStore } from '@entities/user'
+import { AuthByPhoneForm } from '@features/auth-by-phone'
+
 definePageMeta({
     layout: 'default',
 })

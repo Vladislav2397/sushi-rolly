@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CartLineItem, useCartStore } from '@entities/cart'
 import { formatPrice } from '@shared'
 
 const { items, totalPrice, isEmpty, increment, decrement, removeItem } = useCartStore()

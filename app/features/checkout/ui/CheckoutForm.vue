@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { OrderFulfillment } from '@entities/order'
 import type { RadioGroupItem } from '@nuxt/ui'
+import { useUserStore } from '@entities/user'
+import { useCartStore } from '@entities/cart'
+import { useOrderStore, type OrderFulfillment } from '@entities/order'
 import { formatPrice, RESTAURANT } from '@shared'
 
 const toast = useToast()

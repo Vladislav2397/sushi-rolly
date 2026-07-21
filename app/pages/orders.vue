@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { OrdersList } from '@widgets/orders-list'
+
 definePageMeta({
     middleware: 'auth',
 })

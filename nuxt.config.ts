@@ -17,19 +17,9 @@ export default defineNuxtConfig({
         '@features': fileURLToPath(new URL('./app/features', import.meta.url)),
         '@widgets': fileURLToPath(new URL('./app/widgets', import.meta.url)),
     },
-    components: [
-        { path: '~/entities', pathPrefix: false, pattern: '**/ui/*.vue' },
-        { path: '~/features', pathPrefix: false, pattern: '**/ui/*.vue' },
-        { path: '~/widgets', pathPrefix: false, pattern: '**/ui/*.vue' },
-    ],
+    // FSD UI и model — только через public API (@entities/*, @features/*, @widgets/*, @shared)
     imports: {
-        dirs: [
-            'shared/lib',
-            'shared/config',
-            'entities/*/model',
-            'features/*/model',
-            'widgets/*/model',
-        ],
+        dirs: [],
     },
     colorMode: {
         preference: 'light',

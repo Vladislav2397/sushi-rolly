@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useUserStore } from '@entities/user'
+import { OrderCard, useOrderStore } from '@entities/order'
+
 const { user } = useUserStore()
 const { getOrdersByUser, fetchOrders, ordersLoaded } = useOrderStore()
 

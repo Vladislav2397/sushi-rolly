@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { CartPanel } from '@widgets/cart-panel'
+
 useSeoMeta({
     title: 'Корзина — Sushi Rolly',
 })

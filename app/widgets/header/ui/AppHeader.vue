@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useUserStore } from '@entities/user'
+import { useCartStore } from '@entities/cart'
 import { formatPhone, RESTAURANT } from '@shared'
 
 const route = useRoute()

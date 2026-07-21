@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUserStore } from '@entities/user'
 import { formatPhone, isValidPhone } from '@shared'
 
 const toast = useToast()
