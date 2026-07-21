@@ -20,7 +20,9 @@
             "@features": ["./app/features"],
             "@features/*": ["./app/features/*"],
             "@widgets": ["./app/widgets"],
-            "@widgets/*": ["./app/widgets/*"]
+            "@widgets/*": ["./app/widgets/*"],
+            "@pages": ["./app/pages"],
+            "@pages/*": ["./app/pages/*"]
         }
     },
     "include": [

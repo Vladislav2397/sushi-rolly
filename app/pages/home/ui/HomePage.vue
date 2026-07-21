@@ -2,9 +2,9 @@
 import { useData } from 'vike-vue/useData'
 import { MenuCatalog } from '@widgets/menu-catalog'
 import { RESTAURANT, UiButton } from '@shared'
-import type { Data } from './+data'
+import type { ApiMenuResponse } from '@shared/api'
 
-const data = useData<Data>()
+const data = useData<{ menu: ApiMenuResponse | null }>()
 
 const menuNav = [
     { label: 'Сеты', to: '#sets' },

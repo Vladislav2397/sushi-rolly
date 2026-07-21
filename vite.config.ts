@@ -12,6 +12,7 @@ export default defineConfig({
             '@entities': fileURLToPath(new URL('./app/entities', import.meta.url)),
             '@features': fileURLToPath(new URL('./app/features', import.meta.url)),
             '@widgets': fileURLToPath(new URL('./app/widgets', import.meta.url)),
+            '@pages': fileURLToPath(new URL('./app/pages', import.meta.url)),
         },
     },
 })
