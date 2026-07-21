@@ -1,3 +1,5 @@
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
 import type { CartItem } from './types'
 import type { MenuProduct, MenuSet } from '@entities/menu'
 import { readStorage, writeStorage } from '@shared'
@@ -25,8 +27,8 @@ function toCartItem(product: MenuSet | MenuProduct, quantity: number): CartItem 
     }
 }
 
-export function useCartStore() {
-    const items = useState<CartItem[]>('cart-items', () => [])
+export const useCartStore = defineStore('cart', () => {
+    const items = ref<CartItem[]>([])
 
     const totalCount = computed(() => items.value.reduce((sum, item) => sum + item.quantity, 0))
 
@@ -42,7 +44,6 @@ export function useCartStore() {
 
     function hydrate() {
         const stored = readStorage<CartItem[]>(STORAGE_KEY, [])
-        // миграция со старого формата (setId → productId)
         items.value = stored.map((item) => ({
             ...item,
             productId: item.productId ?? (item as unknown as { setId?: string }).setId ?? '',
@@ -120,4 +121,4 @@ export function useCartStore() {
         removeItem,
         clear,
     }
-}
+})

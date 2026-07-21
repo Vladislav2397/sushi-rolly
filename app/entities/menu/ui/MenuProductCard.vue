@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MenuProduct } from '../model/types'
 import { MENU_CATEGORY_ACCENT, MENU_CATEGORY_ICON, MENU_CATEGORY_LABEL } from '../model/category'
-import { formatPrice } from '@shared'
+import { formatPrice, UiBadge, UiButton, UiIcon } from '@shared'
 
 defineProps<{
     item: MenuProduct
@@ -37,7 +37,7 @@ function metaLine(item: MenuProduct): string {
             }"
         >
             <div class="flex size-9 items-center justify-center rounded-xl bg-white/15">
-                <UIcon :name="MENU_CATEGORY_ICON[item.category]" class="size-4" />
+                <UiIcon :name="MENU_CATEGORY_ICON[item.category]" class="size-4" />
             </div>
             <p class="text-xs tracking-[0.15em] uppercase opacity-90">
                 {{ MENU_CATEGORY_LABEL[item.category] }}
@@ -51,7 +51,7 @@ function metaLine(item: MenuProduct): string {
             </div>
 
             <div v-if="item.tags.length" class="flex flex-wrap gap-1.5">
-                <UBadge
+                <UiBadge
                     v-for="tag in item.tags"
                     :key="tag"
                     color="neutral"
@@ -59,7 +59,7 @@ function metaLine(item: MenuProduct): string {
                     size="sm"
                 >
                     {{ tag }}
-                </UBadge>
+                </UiBadge>
             </div>
 
             <div class="mt-auto flex items-end justify-between gap-3 border-t border-ink-100 pt-3">
@@ -70,14 +70,14 @@ function metaLine(item: MenuProduct): string {
                     <p v-if="metaLine(item)" class="text-xs text-ink-500">{{ metaLine(item) }}</p>
                 </div>
 
-                <UButton
+                <UiButton
                     icon="i-lucide-plus"
                     color="primary"
                     size="sm"
                     @click="$emit('add')"
                 >
                     В корзину
-                </UButton>
+                </UiButton>
             </div>
         </div>
     </article>

@@ -1,17 +1,20 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@entities/user'
-import { formatPhone, isValidPhone } from '@shared'
+import { formatPhone, isValidPhone, UiButton, UiFormField, UiInput, UiPinInput, useToast } from '@shared'
 
 const emit = defineEmits<{
     success: []
 }>()
 
 const toast = useToast()
-const { pendingPhone, requestCode, verifyCode } = useUserStore()
+const userStore = useUserStore()
+const { pendingPhone } = storeToRefs(userStore)
 
 const step = ref<'phone' | 'code'>(pendingPhone.value ? 'code' : 'phone')
 const phone = ref('')
-const codeDigits = ref<number[]>([])
+const codeDigits = ref<string[]>([])
 const loading = ref(false)
 const error = ref('')
 
@@ -31,7 +34,7 @@ async function submitPhone() {
 
     loading.value = true
     try {
-        await requestCode(phone.value)
+        await userStore.requestCode(phone.value)
         step.value = 'code'
         toast.add({
             title: 'Код отправлен',
@@ -56,7 +59,7 @@ async function submitCode() {
     }
 
     loading.value = true
-    const result = await verifyCode(code)
+    const result = await userStore.verifyCode(code)
     loading.value = false
 
     if (!result.ok) {
@@ -99,8 +102,8 @@ function backToPhone() {
             class="space-y-4"
             @submit.prevent="submitPhone"
         >
-            <UFormField label="Телефон" name="phone" :error="error || undefined">
-                <UInput
+            <UiFormField label="Телефон" name="phone" :error="error || undefined">
+                <UiInput
                     v-model="phone"
                     type="tel"
                     size="xl"
@@ -109,16 +112,11 @@ function backToPhone() {
                     autocomplete="tel"
                     class="w-full"
                 />
-            </UFormField>
+            </UiFormField>
 
-            <UButton
-                type="submit"
-                size="xl"
-                block
-                :loading="loading"
-            >
+            <UiButton type="submit" size="xl" block :loading="loading">
                 Получить код
-            </UButton>
+            </UiButton>
         </form>
 
         <form
@@ -133,34 +131,17 @@ function backToPhone() {
                 </span>
             </p>
 
-            <UFormField label="Код из SMS" name="code" :error="error || undefined">
-                <UPinInput
-                    v-model="codeDigits"
-                    otp
-                    type="number"
-                    :length="4"
-                    size="xl"
-                    placeholder="○"
-                />
-            </UFormField>
+            <UiFormField label="Код из SMS" name="code" :error="error || undefined">
+                <UiPinInput v-model="codeDigits" :length="4" size="xl" placeholder="○" />
+            </UiFormField>
 
-            <UButton
-                type="submit"
-                size="xl"
-                block
-                :loading="loading"
-            >
+            <UiButton type="submit" size="xl" block :loading="loading">
                 Войти
-            </UButton>
+            </UiButton>
 
-            <UButton
-                color="neutral"
-                variant="ghost"
-                block
-                @click="backToPhone"
-            >
+            <UiButton color="neutral" variant="ghost" block @click="backToPhone">
                 Изменить номер
-            </UButton>
+            </UiButton>
         </form>
     </div>
 </template>

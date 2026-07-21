@@ -1,4 +1,5 @@
-import type { H3Event } from 'h3'
+import type { Context } from 'hono'
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 
 const SESSION_COOKIE = 'sushi_session'
 const SESSION_TTL_DAYS = 30
@@ -42,22 +43,22 @@ export function getAuthCodeExpiry(): Date {
     return date
 }
 
-export function setSessionCookie(event: H3Event, token: string, expiresAt: Date) {
-    setCookie(event, SESSION_COOKIE, token, {
+export function setSessionCookie(c: Context, token: string, expiresAt: Date) {
+    setCookie(c, SESSION_COOKIE, token, {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'Lax',
         secure: process.env.NODE_ENV === 'production',
         path: '/',
         expires: expiresAt,
     })
 }
 
-export function clearSessionCookie(event: H3Event) {
-    deleteCookie(event, SESSION_COOKIE, { path: '/' })
+export function clearSessionCookie(c: Context) {
+    deleteCookie(c, SESSION_COOKIE, { path: '/' })
 }
 
-export function getSessionToken(event: H3Event): string | undefined {
-    return getCookie(event, SESSION_COOKIE)
+export function getSessionToken(c: Context): string | undefined {
+    return getCookie(c, SESSION_COOKIE)
 }
 
 export { SESSION_COOKIE }

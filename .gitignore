@@ -1,12 +1,12 @@
-# Nuxt dev/build outputs
+# Nuxt legacy (if present)
 .output
 .data
 .nuxt
 .nitro
 .cache
-dist
 
-# Node dependencies
+# Vike / Vite
+dist
 node_modules
 
 # Logs

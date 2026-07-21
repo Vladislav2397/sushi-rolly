@@ -7,14 +7,10 @@ let db: ReturnType<typeof drizzle<typeof schema>> | null = null
 
 export function useDb() {
     if (!db) {
-        const config = useRuntimeConfig()
-        const url = config.databaseUrl as string
+        const url = process.env.DATABASE_URL
 
         if (!url) {
-            throw createError({
-                statusCode: 500,
-                statusMessage: 'DATABASE_URL is not configured',
-            })
+            throw new Error('DATABASE_URL is not configured')
         }
 
         client = postgres(url, { max: 10 })

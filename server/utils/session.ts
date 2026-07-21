@@ -1,10 +1,11 @@
-import type { H3Event } from 'h3'
+import type { Context } from 'hono'
+import { HTTPException } from 'hono/http-exception'
 import { and, eq, gt } from 'drizzle-orm'
 import { useDb, schema } from '../database/client'
 import { getSessionToken } from './auth'
 
-export async function getCurrentUser(event: H3Event) {
-    const token = getSessionToken(event)
+export async function getCurrentUser(c: Context) {
+    const token = getSessionToken(c)
     if (!token) {
         return null
     }
@@ -22,14 +23,11 @@ export async function getCurrentUser(event: H3Event) {
     return row?.user ?? null
 }
 
-export async function requireUser(event: H3Event) {
-    const user = await getCurrentUser(event)
+export async function requireUser(c: Context) {
+    const user = await getCurrentUser(c)
 
     if (!user) {
-        throw createError({
-            statusCode: 401,
-            statusMessage: 'Unauthorized',
-        })
+        throw new HTTPException(401, { message: 'Unauthorized' })
     }
 
     return user

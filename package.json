@@ -3,13 +3,11 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "build": "nuxt build",
-        "dev": "nuxt dev",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
+        "dev": "vike dev",
+        "build": "vike build",
+        "preview": "vike preview",
         "format": "prettier --write .",
-        "typecheck": "nuxt typecheck",
-        "postinstall": "nuxt prepare",
+        "typecheck": "vue-tsc --noEmit",
         "db:up": "docker compose up -d",
         "db:down": "docker compose down",
         "db:push": "drizzle-kit push",
@@ -18,22 +16,33 @@
         "db:seed": "tsx server/database/seed.ts"
     },
     "dependencies": {
-        "@nuxt/ui": "^4.10.0",
+        "@fontsource-variable/manrope": "^5.3.0",
+        "@fontsource-variable/syne": "^5.3.0",
+        "@iconify/vue": "^5.0.1",
+        "@vikejs/hono": "^0.2.1",
         "drizzle-orm": "^0.45.2",
-        "nuxt": "^4.5.0",
+        "hono": "^4.12.31",
+        "ofetch": "^1.5.1",
+        "pinia": "^4.0.2",
         "postgres": "^3.4.9",
+        "reka-ui": "^2.10.1",
         "tailwindcss": "^4.3.3",
+        "vike": "^0.4.260",
+        "vike-vue": "^0.9.13",
         "vue": "^3.5.40",
         "vue-router": "^5.2.0"
     },
     "devDependencies": {
         "@iconify-json/lucide": "^1.2.118",
+        "@tailwindcss/vite": "^4.3.3",
         "@types/node": "^26.1.1",
+        "@vitejs/plugin-vue": "^6.0.8",
         "dotenv": "^17.4.2",
         "drizzle-kit": "^0.31.10",
         "prettier": "^3.9.5",
         "tsx": "^4.23.1",
         "typescript": "^6.0.3",
+        "vite": "^8.1.5",
         "vue-tsc": "^3.3.7"
     }
 }

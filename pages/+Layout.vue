@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import { AppHeader } from '@widgets/header'
+import { UiToaster } from '@shared'
+import '../app/assets/css/main.css'
+</script>
+
+<template>
+    <div class="page-shell min-h-dvh">
+        <AppHeader />
+        <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+            <slot />
+        </main>
+        <UiToaster />
+    </div>
+</template>

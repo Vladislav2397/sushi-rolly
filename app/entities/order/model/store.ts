@@ -1,3 +1,5 @@
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
 import type { Order, OrderFulfillment } from './types'
 import type { CartItem } from '@entities/cart'
 import {
@@ -8,9 +10,9 @@ import {
 } from '@shared/api'
 import { RESTAURANT } from '@shared'
 
-export function useOrderStore() {
-    const orders = useState<Order[]>('orders', () => [])
-    const ordersLoaded = useState('orders-loaded', () => false)
+export const useOrderStore = defineStore('order', () => {
+    const orders = ref<Order[]>([])
+    const ordersLoaded = ref(false)
 
     function getOrdersByUser(userId: string) {
         return computed(() =>
@@ -73,7 +75,7 @@ export function useOrderStore() {
         fetchOrders,
         createOrder,
     }
-}
+})
 
 export const ORDER_STATUS_LABEL: Record<Order['status'], string> = {
     new: 'Принят',

@@ -1,28 +1,36 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { navigate } from 'vike/client/router'
+import { usePageContext } from 'vike-vue/usePageContext'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@entities/user'
 import { useCartStore } from '@entities/cart'
-import { formatPhone, RESTAURANT } from '@shared'
+import { formatPhone, RESTAURANT, UiBadge, UiButton } from '@shared'
 
-const route = useRoute()
-const { user, isAuthenticated, logout } = useUserStore()
-const { totalCount } = useCartStore()
+const pageContext = usePageContext()
+const userStore = useUserStore()
+const cartStore = useCartStore()
+const { user, isAuthenticated } = storeToRefs(userStore)
+const { totalCount } = storeToRefs(cartStore)
+
+const path = computed(() => pageContext.urlPathname)
 
 const links = computed(() => [
-    { label: 'Меню', to: '/', active: route.path === '/' },
-    { label: 'Корзина', to: '/cart', active: route.path === '/cart' },
-    { label: 'Заказы', to: '/orders', active: route.path.startsWith('/orders') },
+    { label: 'Меню', to: '/', active: path.value === '/' },
+    { label: 'Корзина', to: '/cart', active: path.value === '/cart' },
+    { label: 'Заказы', to: '/orders', active: path.value.startsWith('/orders') },
 ])
 
 async function onLogout() {
-    await logout()
-    navigateTo('/')
+    await userStore.logout()
+    await navigate('/')
 }
 </script>
 
 <template>
     <header class="sticky top-0 z-40 border-b border-ink-200/70 bg-white/80 backdrop-blur-md">
         <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-            <NuxtLink to="/" class="group flex items-center gap-3">
+            <a href="/" class="group flex items-center gap-3" @click.prevent="navigate('/')">
                 <span
                     class="flex size-10 items-center justify-center rounded-2xl bg-ink-950 font-display text-sm font-bold text-white transition group-hover:bg-brand-600"
                 >
@@ -34,10 +42,10 @@ async function onLogout() {
                     </span>
                     <span class="hidden text-xs text-ink-500 sm:block">{{ RESTAURANT.tagline }}</span>
                 </span>
-            </NuxtLink>
+            </a>
 
             <nav class="hidden items-center gap-1 md:flex">
-                <UButton
+                <UiButton
                     v-for="link in links"
                     :key="link.to"
                     :to="link.to"
@@ -47,20 +55,15 @@ async function onLogout() {
                 >
                     {{ link.label }}
                     <template v-if="link.to === '/cart' && totalCount">
-                        <UBadge
-                            color="primary"
-                            variant="solid"
-                            size="sm"
-                            class="ml-1"
-                        >
+                        <UiBadge color="primary" variant="solid" size="sm" class="ml-1">
                             {{ totalCount }}
-                        </UBadge>
+                        </UiBadge>
                     </template>
-                </UButton>
+                </UiButton>
             </nav>
 
             <div class="flex items-center gap-2">
-                <UButton
+                <UiButton
                     to="/cart"
                     color="neutral"
                     variant="soft"
@@ -68,22 +71,17 @@ async function onLogout() {
                     class="md:hidden"
                     :aria-label="`Корзина, ${totalCount} позиций`"
                 >
-                    <UBadge
-                        v-if="totalCount"
-                        color="primary"
-                        variant="solid"
-                        size="sm"
-                    >
+                    <UiBadge v-if="totalCount" color="primary" variant="solid" size="sm">
                         {{ totalCount }}
-                    </UBadge>
-                </UButton>
+                    </UiBadge>
+                </UiButton>
 
                 <template v-if="isAuthenticated">
                     <div class="hidden text-right sm:block">
                         <p class="text-xs text-ink-500">Вы вошли</p>
                         <p class="text-sm font-medium">{{ formatPhone(user!.phone) }}</p>
                     </div>
-                    <UButton
+                    <UiButton
                         color="neutral"
                         variant="ghost"
                         icon="i-lucide-log-out"
@@ -91,7 +89,7 @@ async function onLogout() {
                         @click="onLogout"
                     />
                 </template>
-                <UButton
+                <UiButton
                     v-else
                     to="/auth"
                     color="primary"
@@ -99,12 +97,12 @@ async function onLogout() {
                     icon="i-lucide-user"
                 >
                     Войти
-                </UButton>
+                </UiButton>
             </div>
         </div>
 
         <nav class="flex gap-1 overflow-x-auto border-t border-ink-100 px-4 py-2 md:hidden">
-            <UButton
+            <UiButton
                 v-for="link in links"
                 :key="link.to"
                 :to="link.to"
@@ -114,7 +112,7 @@ async function onLogout() {
                 class="shrink-0"
             >
                 {{ link.label }}
-            </UButton>
+            </UiButton>
         </nav>
     </header>
 </template>

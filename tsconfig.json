@@ -1,21 +1,33 @@
 {
-    // https://nuxt.com/docs/guide/concepts/typescript
-    "files": [],
-    "references": [
-        {
-            "path": "./.nuxt/tsconfig.app.json"
-        },
-        {
-            "path": "./.nuxt/tsconfig.server.json"
-        },
-        {
-            "path": "./.nuxt/tsconfig.shared.json"
-        },
-        {
-            "path": "./.nuxt/tsconfig.node.json"
-        },
-        {
-            "path": "./tsconfig.scripts.json"
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "strict": true,
+        "jsx": "preserve",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "types": ["vite/client"],
+        "paths": {
+            "@shared": ["./app/shared"],
+            "@shared/*": ["./app/shared/*"],
+            "@entities": ["./app/entities"],
+            "@entities/*": ["./app/entities/*"],
+            "@features": ["./app/features"],
+            "@features/*": ["./app/features/*"],
+            "@widgets": ["./app/widgets"],
+            "@widgets/*": ["./app/widgets/*"]
         }
-    ]
+    },
+    "include": [
+        "pages/**/*",
+        "app/**/*",
+        "server/**/*",
+        "vite.config.ts"
+    ],
+    "exclude": ["node_modules", "dist"]
 }

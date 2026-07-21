@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { MenuSetCard, type MenuSet } from '@entities/menu'
 import { useCartStore } from '@entities/cart'
+import { useToast } from '@shared'
 
 const props = defineProps<{
     set: MenuSet
 }>()
 
 const toast = useToast()
-const { addProduct } = useCartStore()
+const cartStore = useCartStore()
 
 function onAdd() {
-    addProduct(props.set)
+    cartStore.addProduct(props.set)
     toast.add({
         title: 'Добавлено в корзину',
         description: props.set.title,

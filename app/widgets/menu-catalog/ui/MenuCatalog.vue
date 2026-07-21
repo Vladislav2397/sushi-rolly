@@ -1,11 +1,35 @@
 <script setup lang="ts">
-import { MENU_CATEGORY_LABEL } from '@entities/menu'
+import { computed, onMounted, ref } from 'vue'
+import { MENU_CATEGORY_LABEL, type MenuProduct, type MenuSet } from '@entities/menu'
 import { AddToCartProductCard, AddToCartSetCard } from '@features/add-to-cart'
 import { api, type ApiMenuResponse } from '@shared/api'
+import { UiButton, UiSkeleton } from '@shared'
 
-const { data, pending, error, refresh } = await useAsyncData('menu', () =>
-    api<ApiMenuResponse>('/api/menu'),
-)
+const props = defineProps<{
+    initialData?: ApiMenuResponse | null
+}>()
+
+const data = ref<ApiMenuResponse | null>(props.initialData ?? null)
+const pending = ref(!props.initialData)
+const error = ref(false)
+
+async function load() {
+    pending.value = true
+    error.value = false
+    try {
+        data.value = await api<ApiMenuResponse>('/api/menu')
+    } catch {
+        error.value = true
+    } finally {
+        pending.value = false
+    }
+}
+
+onMounted(() => {
+    if (!data.value) {
+        void load()
+    }
+})
 
 const sections = computed(() => {
     if (!data.value) {
@@ -13,22 +37,22 @@ const sections = computed(() => {
     }
 
     return [
-        { id: 'sets', label: MENU_CATEGORY_LABEL.set, items: data.value.sets, type: 'set' as const },
-        { id: 'sushi', label: MENU_CATEGORY_LABEL.sushi, items: data.value.sushi, type: 'product' as const },
-        { id: 'rolls', label: MENU_CATEGORY_LABEL.roll, items: data.value.rolls, type: 'product' as const },
-        { id: 'drinks', label: MENU_CATEGORY_LABEL.drink, items: data.value.drinks, type: 'product' as const },
+        { id: 'sets', label: MENU_CATEGORY_LABEL.set, items: data.value.sets as MenuSet[], type: 'set' as const },
+        { id: 'sushi', label: MENU_CATEGORY_LABEL.sushi, items: data.value.sushi as MenuProduct[], type: 'product' as const },
+        { id: 'rolls', label: MENU_CATEGORY_LABEL.roll, items: data.value.rolls as MenuProduct[], type: 'product' as const },
+        { id: 'drinks', label: MENU_CATEGORY_LABEL.drink, items: data.value.drinks as MenuProduct[], type: 'product' as const },
     ]
 })
 </script>
 
 <template>
     <div v-if="pending" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <USkeleton v-for="n in 6" :key="n" class="h-72 rounded-3xl" />
+        <UiSkeleton v-for="n in 6" :key="n" class="h-72 rounded-3xl" />
     </div>
 
     <div v-else-if="error" class="rounded-3xl bg-white px-6 py-12 text-center ring-1 ring-ink-200/80">
         <p class="text-ink-600">Не удалось загрузить меню</p>
-        <UButton class="mt-4" @click="refresh()">Повторить</UButton>
+        <UiButton class="mt-4" @click="load()">Повторить</UiButton>
     </div>
 
     <div v-else class="space-y-10">

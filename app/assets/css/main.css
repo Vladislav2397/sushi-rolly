@@ -1,9 +1,10 @@
 @import 'tailwindcss';
-@import '@nuxt/ui';
+@import '@fontsource-variable/syne';
+@import '@fontsource-variable/manrope';
 
 @theme static {
-    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Syne Variable', 'Syne', ui-sans-serif, system-ui, sans-serif;
 
     --color-brand-50: #fff4f1;
     --color-brand-100: #ffe6df;

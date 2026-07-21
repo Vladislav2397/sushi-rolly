@@ -2,7 +2,7 @@
 import type { Order } from '../model/types'
 import { ORDER_FULFILLMENT_LABEL, ORDER_STATUS_LABEL } from '../model/store'
 import { MENU_CATEGORY_LABEL } from '@entities/menu'
-import { formatDateTime, formatPrice, RESTAURANT } from '@shared'
+import { formatDateTime, formatPrice, RESTAURANT, UiBadge } from '@shared'
 
 defineProps<{
     order: Order
@@ -27,12 +27,12 @@ function itemLabel(item: Order['items'][number]): string {
             </div>
 
             <div class="flex flex-wrap gap-2">
-                <UBadge color="primary" variant="subtle">
+                <UiBadge color="primary" variant="subtle">
                     {{ ORDER_STATUS_LABEL[order.status] }}
-                </UBadge>
-                <UBadge color="neutral" variant="subtle">
+                </UiBadge>
+                <UiBadge color="neutral" variant="subtle">
                     {{ ORDER_FULFILLMENT_LABEL[order.fulfillment] }}
-                </UBadge>
+                </UiBadge>
             </div>
         </div>
 

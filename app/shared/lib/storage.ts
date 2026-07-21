@@ -3,7 +3,7 @@ export function uid(prefix = 'id'): string {
 }
 
 export function readStorage<T>(key: string, fallback: T): T {
-    if (!import.meta.client) {
+    if (typeof window === 'undefined') {
         return fallback
     }
 
@@ -19,7 +19,7 @@ export function readStorage<T>(key: string, fallback: T): T {
 }
 
 export function writeStorage<T>(key: string, value: T): void {
-    if (!import.meta.client) {
+    if (typeof window === 'undefined') {
         return
     }
 
@@ -27,7 +27,7 @@ export function writeStorage<T>(key: string, value: T): void {
 }
 
 export function removeStorage(key: string): void {
-    if (!import.meta.client) {
+    if (typeof window === 'undefined') {
         return
     }
 

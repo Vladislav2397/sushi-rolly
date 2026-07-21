@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import type { RadioGroupItem } from '@nuxt/ui'
+import { computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@entities/user'
 import { useCartStore } from '@entities/cart'
 import { useOrderStore, type OrderFulfillment } from '@entities/order'
-import { formatPrice, RESTAURANT } from '@shared'
+import {
+    formatPrice,
+    RESTAURANT,
+    UiButton,
+    UiFormField,
+    UiInput,
+    UiRadioGroup,
+    UiTextarea,
+    useToast,
+    type RadioGroupOption,
+} from '@shared'
 
 const emit = defineEmits<{
     success: []
@@ -11,9 +22,11 @@ const emit = defineEmits<{
 }>()
 
 const toast = useToast()
-const { user } = useUserStore()
-const { items, totalPrice, isEmpty, clear } = useCartStore()
-const { createOrder, calcDeliveryFee } = useOrderStore()
+const userStore = useUserStore()
+const cartStore = useCartStore()
+const orderStore = useOrderStore()
+const { user } = storeToRefs(userStore)
+const { items, totalPrice, isEmpty } = storeToRefs(cartStore)
 
 const fulfillment = ref<OrderFulfillment>('pickup')
 const address = ref('')
@@ -21,7 +34,7 @@ const comment = ref('')
 const loading = ref(false)
 const error = ref('')
 
-const fulfillmentItems = computed<RadioGroupItem[]>(() => [
+const fulfillmentItems = computed<RadioGroupOption[]>(() => [
     {
         label: 'Самовывоз',
         description: `Готово через ~${RESTAURANT.pickupEtaMin} мин · ${RESTAURANT.address}`,
@@ -34,7 +47,7 @@ const fulfillmentItems = computed<RadioGroupItem[]>(() => [
     },
 ])
 
-const deliveryFee = computed(() => calcDeliveryFee(totalPrice.value, fulfillment.value))
+const deliveryFee = computed(() => orderStore.calcDeliveryFee(totalPrice.value, fulfillment.value))
 const grandTotal = computed(() => totalPrice.value + deliveryFee.value)
 
 async function submit() {
@@ -57,7 +70,7 @@ async function submit() {
 
     loading.value = true
     try {
-        const order = await createOrder({
+        const order = await orderStore.createOrder({
             userId: user.value.id,
             phone: user.value.phone,
             items: items.value,
@@ -66,7 +79,7 @@ async function submit() {
             comment: comment.value,
         })
 
-        clear()
+        cartStore.clear()
 
         toast.add({
             title: 'Заказ оформлен',
@@ -88,38 +101,32 @@ async function submit() {
     <form class="space-y-6" @submit.prevent="submit">
         <section class="rounded-3xl bg-white p-5 ring-1 ring-ink-200/80 sm:p-6">
             <h2 class="font-display text-xl font-semibold">Способ получения</h2>
-            <URadioGroup
-                v-model="fulfillment"
-                :items="fulfillmentItems"
-                variant="card"
-                indicator="start"
-                class="mt-4"
-            />
+            <UiRadioGroup v-model="fulfillment" :items="fulfillmentItems" class="mt-4" />
 
-            <UFormField
+            <UiFormField
                 v-if="fulfillment === 'delivery'"
                 class="mt-4"
                 label="Адрес доставки"
                 name="address"
                 :error="error && fulfillment === 'delivery' ? error : undefined"
             >
-                <UInput
+                <UiInput
                     v-model="address"
                     size="lg"
                     icon="i-lucide-map-pin"
                     placeholder="Улица, дом, квартира"
                     class="w-full"
                 />
-            </UFormField>
+            </UiFormField>
 
-            <UFormField class="mt-4" label="Комментарий к заказу" name="comment">
-                <UTextarea
+            <UiFormField class="mt-4" label="Комментарий к заказу" name="comment">
+                <UiTextarea
                     v-model="comment"
                     :rows="3"
                     placeholder="Домофон, этаж, пожелания..."
                     class="w-full"
                 />
-            </UFormField>
+            </UiFormField>
         </section>
 
         <section class="rounded-3xl bg-white p-5 ring-1 ring-ink-200/80 sm:p-6">
@@ -153,7 +160,7 @@ async function submit() {
                 {{ error }}
             </p>
 
-            <UButton
+            <UiButton
                 type="submit"
                 size="xl"
                 block
@@ -162,7 +169,7 @@ async function submit() {
                 :disabled="isEmpty"
             >
                 Подтвердить заказ
-            </UButton>
+            </UiButton>
         </section>
     </form>
 </template>

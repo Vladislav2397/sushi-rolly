@@ -1,11 +1,13 @@
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
 import type { User } from './types'
 import { api, type ApiUserResponse } from '@shared/api'
 import { normalizePhone } from '@shared/lib/format'
 
-export function useUserStore() {
-    const user = useState<User | null>('user', () => null)
-    const pendingPhone = useState<string | null>('auth-pending-phone', () => null)
-    const authReady = useState('auth-ready', () => false)
+export const useUserStore = defineStore('user', () => {
+    const user = ref<User | null>(null)
+    const pendingPhone = ref<string | null>(null)
+    const authReady = ref(false)
 
     const isAuthenticated = computed(() => Boolean(user.value))
 
@@ -64,4 +66,4 @@ export function useUserStore() {
         verifyCode,
         logout,
     }
-}
+})

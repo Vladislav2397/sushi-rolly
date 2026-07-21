@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CartItem } from '../model/types'
 import { MENU_CATEGORY_ICON, MENU_CATEGORY_LABEL } from '@entities/menu'
-import { formatPrice } from '@shared'
+import { formatPrice, UiButton, UiIcon } from '@shared'
 
 defineProps<{
     item: CartItem
@@ -21,7 +21,7 @@ defineEmits<{
             :class="item.category === 'set' ? 'bg-ink-950' : 'bg-brand-600'"
         >
             <span v-if="item.category === 'set' && item.number">{{ item.number }}</span>
-            <UIcon v-else :name="MENU_CATEGORY_ICON[item.category]" class="size-5" />
+            <UiIcon v-else :name="MENU_CATEGORY_ICON[item.category]" class="size-5" />
         </div>
 
         <div class="min-w-0 flex-1">
@@ -33,7 +33,7 @@ defineEmits<{
         </div>
 
         <div class="flex items-center gap-1">
-            <UButton
+            <UiButton
                 icon="i-lucide-minus"
                 color="neutral"
                 variant="soft"
@@ -42,7 +42,7 @@ defineEmits<{
                 @click="$emit('decrement')"
             />
             <span class="w-8 text-center text-sm font-semibold">{{ item.quantity }}</span>
-            <UButton
+            <UiButton
                 icon="i-lucide-plus"
                 color="neutral"
                 variant="soft"
@@ -54,7 +54,7 @@ defineEmits<{
 
         <div class="hidden w-24 text-right sm:block">
             <p class="font-semibold">{{ formatPrice(item.price * item.quantity) }}</p>
-            <UButton
+            <UiButton
                 color="neutral"
                 variant="link"
                 size="xs"
@@ -62,7 +62,7 @@ defineEmits<{
                 @click="$emit('remove')"
             >
                 Удалить
-            </UButton>
+            </UiButton>
         </div>
     </div>
 </template>
