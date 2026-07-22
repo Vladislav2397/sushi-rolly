@@ -1,9 +1,32 @@
-import type { MenuCategory, MenuProduct, MenuSet } from '@entities/menu'
-import type { Order, OrderFulfillment, OrderStatus } from '@entities/order'
-import type { User } from '@entities/user'
+export type ApiMenuCategory = 'set' | 'sushi' | 'roll' | 'drink'
 
-export type ApiMenuSet = MenuSet
-export type ApiMenuProduct = MenuProduct
+export interface ApiMenuSet {
+    id: string
+    category: 'set'
+    number: number
+    title: string
+    description: string
+    pieces: number
+    weight: number
+    price: number
+    tags: string[]
+    accent: string
+}
+
+export interface ApiMenuProduct {
+    id: string
+    category: 'sushi' | 'roll' | 'drink'
+    title: string
+    description: string
+    price: number
+    tags: string[]
+    /** Количество штук (суши, роллы) */
+    pieces?: number
+    /** Вес в граммах */
+    weight?: number
+    /** Объём в мл (напитки) */
+    volume?: number
+}
 
 export interface ApiMenuResponse {
     sets: ApiMenuSet[]
@@ -12,16 +35,50 @@ export interface ApiMenuResponse {
     drinks: ApiMenuProduct[]
 }
 
+export interface ApiUser {
+    id: string
+    phone: string
+    createdAt: string
+}
+
 export interface ApiUserResponse {
-    user: User | null
+    user: ApiUser | null
+}
+
+export type ApiOrderFulfillment = 'pickup' | 'delivery'
+
+export type ApiOrderStatus = 'new' | 'cooking' | 'on_the_way' | 'ready' | 'done'
+
+export interface ApiOrderItem {
+    productId: string
+    category: ApiMenuCategory
+    title: string
+    price: number
+    quantity: number
+    number?: number
+}
+
+export interface ApiOrder {
+    id: string
+    userId: string
+    phone: string
+    items: ApiOrderItem[]
+    fulfillment: ApiOrderFulfillment
+    address: string | null
+    comment: string
+    subtotal: number
+    deliveryFee: number
+    total: number
+    status: ApiOrderStatus
+    createdAt: string
 }
 
 export interface ApiOrdersResponse {
-    orders: Order[]
+    orders: ApiOrder[]
 }
 
 export interface ApiCreateOrderResponse {
-    order: Order
+    order: ApiOrder
 }
 
 export interface ApiOrderItemInput {
@@ -31,9 +88,7 @@ export interface ApiOrderItemInput {
 
 export interface ApiCreateOrderBody {
     items: ApiOrderItemInput[]
-    fulfillment: OrderFulfillment
+    fulfillment: ApiOrderFulfillment
     address: string | null
     comment: string
 }
-
-export type { MenuCategory, OrderStatus }

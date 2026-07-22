@@ -1,31 +1,6 @@
-export type MenuCategory = 'set' | 'sushi' | 'roll' | 'drink'
+import type { ApiMenuCategory, ApiMenuProduct, ApiMenuSet } from '@shared/api'
 
-export interface MenuSet {
-    id: string
-    category: 'set'
-    number: number
-    title: string
-    description: string
-    pieces: number
-    weight: number
-    price: number
-    tags: string[]
-    accent: string
-}
-
-export interface MenuProduct {
-    id: string
-    category: 'sushi' | 'roll' | 'drink'
-    title: string
-    description: string
-    price: number
-    tags: string[]
-    /** Количество штук (суши, роллы) */
-    pieces?: number
-    /** Вес в граммах */
-    weight?: number
-    /** Объём в мл (напитки) */
-    volume?: number
-}
-
+export type MenuCategory = ApiMenuCategory
+export type MenuSet = ApiMenuSet
+export type MenuProduct = ApiMenuProduct
 export type MenuItem = MenuSet | MenuProduct

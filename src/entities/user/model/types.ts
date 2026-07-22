@@ -1,8 +1,6 @@
-export interface User {
-    id: string
-    phone: string
-    createdAt: string
-}
+import type { ApiUser } from '@shared/api'
+
+export type User = ApiUser
 
 export interface AuthSession {
     user: User | null
