@@ -5,6 +5,9 @@ const meta = {
     title: 'Shared/UiButton',
     component: UiButton,
     tags: ['autodocs'],
+    parameters: {
+        layout: 'padded',
+    },
     argTypes: {
         color: { control: 'select', options: ['primary', 'neutral'] },
         variant: { control: 'select', options: ['solid', 'soft', 'ghost', 'outline', 'link'] },

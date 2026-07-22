@@ -5,6 +5,9 @@ const meta = {
     title: 'Shared/UiBadge',
     component: UiBadge,
     tags: ['autodocs'],
+    parameters: {
+        layout: 'padded',
+    },
     argTypes: {
         color: { control: 'select', options: ['primary', 'neutral'] },
         variant: { control: 'select', options: ['solid', 'subtle'] },
