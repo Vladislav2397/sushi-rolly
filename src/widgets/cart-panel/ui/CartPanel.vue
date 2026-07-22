@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { CartLineItem, useCartStore } from '@entities/cart'
+import { useCartStore } from '@entities/cart'
+import { ManageCartLineItem } from '@features/manage-cart-item'
 import { formatPrice, UiButton, UiIcon } from '@shared'
 
 const cartStore = useCartStore()
@@ -16,14 +17,7 @@ const { items, totalPrice, isEmpty } = storeToRefs(cartStore)
     </div>
 
     <div v-else class="space-y-4">
-        <CartLineItem
-            v-for="item in items"
-            :key="item.productId"
-            :item="item"
-            @increment="cartStore.increment(item.productId)"
-            @decrement="cartStore.decrement(item.productId)"
-            @remove="cartStore.removeItem(item.productId)"
-        />
+        <ManageCartLineItem v-for="item in items" :key="item.productId" :item="item" />
 
         <div
             class="sticky bottom-4 flex flex-col gap-3 rounded-3xl bg-ink-950 p-5 text-white shadow-xl sm:flex-row sm:items-center sm:justify-between"

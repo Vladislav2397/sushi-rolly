@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { MenuProductCard } from '@entities/menu'
 import type { MenuProduct } from '@entities/menu'
+import { UiButton } from '@shared'
 
 const roll: MenuProduct = {
     id: 'roll-1',
@@ -48,11 +49,15 @@ type Story = StoryObj<typeof meta>
 
 function renderCard(args: { item: MenuProduct }) {
     return {
-        components: { MenuProductCard },
+        components: { MenuProductCard, UiButton },
         setup: () => ({ args }),
         template: `
       <div class="max-w-sm">
-        <MenuProductCard :item="args.item" @add="() => {}" />
+        <MenuProductCard :item="args.item">
+          <template #action>
+            <UiButton icon="i-lucide-plus" color="primary" size="sm">В корзину</UiButton>
+          </template>
+        </MenuProductCard>
       </div>
     `,
     }

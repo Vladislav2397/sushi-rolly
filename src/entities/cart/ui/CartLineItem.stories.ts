@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { CartLineItem } from '@entities/cart'
 import type { CartItem } from '@entities/cart'
+import { UiButton } from '@shared'
 
 const setItem: CartItem = {
     productId: 'set-1',
@@ -33,16 +34,21 @@ type Story = StoryObj<typeof meta>
 
 function renderLine(args: { item: CartItem }) {
     return {
-        components: { CartLineItem },
+        components: { CartLineItem, UiButton },
         setup: () => ({ args }),
         template: `
       <div class="max-w-xl">
-        <CartLineItem
-          :item="args.item"
-          @increment="() => {}"
-          @decrement="() => {}"
-          @remove="() => {}"
-        />
+        <CartLineItem :item="args.item">
+          <template #decrement>
+            <UiButton icon="i-lucide-minus" color="neutral" variant="soft" size="sm" square />
+          </template>
+          <template #increment>
+            <UiButton icon="i-lucide-plus" color="neutral" variant="soft" size="sm" square />
+          </template>
+          <template #remove>
+            <UiButton color="neutral" variant="link" size="xs" class="px-0">Удалить</UiButton>
+          </template>
+        </CartLineItem>
       </div>
     `,
     }

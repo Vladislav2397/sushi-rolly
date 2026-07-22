@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import type { MenuSet } from '../model/types'
-import { formatPrice, UiBadge, UiButton } from '@shared'
+import { formatPrice, UiBadge } from '@shared'
 
 defineProps<{
     item: MenuSet
-}>()
-
-defineEmits<{
-    add: []
 }>()
 </script>
 
@@ -57,9 +53,7 @@ defineEmits<{
                     <p class="text-xs text-ink-500">{{ item.pieces }} шт · {{ item.weight }} г</p>
                 </div>
 
-                <UiButton icon="i-lucide-plus" color="primary" @click="$emit('add')">
-                    В корзину
-                </UiButton>
+                <slot name="action" />
             </div>
         </div>
     </article>

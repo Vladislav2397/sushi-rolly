@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { MenuSetCard } from '@entities/menu'
 import type { MenuSet } from '@entities/menu'
+import { UiButton } from '@shared'
 
 const sampleSet: MenuSet = {
     id: 'set-1',
@@ -30,11 +31,15 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
     args: { item: sampleSet },
     render: (args) => ({
-        components: { MenuSetCard },
+        components: { MenuSetCard, UiButton },
         setup: () => ({ args }),
         template: `
       <div class="max-w-sm">
-        <MenuSetCard :item="args.item" @add="() => {}" />
+        <MenuSetCard :item="args.item">
+          <template #action>
+            <UiButton icon="i-lucide-plus" color="primary">В корзину</UiButton>
+          </template>
+        </MenuSetCard>
       </div>
     `,
     }),

@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import type { MenuProduct } from '../model/types'
 import { MENU_CATEGORY_ACCENT, MENU_CATEGORY_ICON, MENU_CATEGORY_LABEL } from '../model/category'
-import { formatPrice, UiBadge, UiButton, UiIcon } from '@shared'
+import { formatPrice, UiBadge, UiIcon } from '@shared'
 
 defineProps<{
     item: MenuProduct
-}>()
-
-defineEmits<{
-    add: []
 }>()
 
 function metaLine(item: MenuProduct): string {
@@ -70,14 +66,7 @@ function metaLine(item: MenuProduct): string {
                     <p v-if="metaLine(item)" class="text-xs text-ink-500">{{ metaLine(item) }}</p>
                 </div>
 
-                <UiButton
-                    icon="i-lucide-plus"
-                    color="primary"
-                    size="sm"
-                    @click="$emit('add')"
-                >
-                    В корзину
-                </UiButton>
+                <slot name="action" />
             </div>
         </div>
     </article>

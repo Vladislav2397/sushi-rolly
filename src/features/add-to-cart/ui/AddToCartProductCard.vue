@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MenuProductCard, type MenuProduct } from '@entities/menu'
 import { useCartStore } from '@entities/cart'
-import { useToast } from '@shared'
+import { UiButton, useToast } from '@shared'
 
 const props = defineProps<{
     product: MenuProduct
@@ -22,5 +22,11 @@ function onAdd() {
 </script>
 
 <template>
-    <MenuProductCard :item="product" @add="onAdd" />
+    <MenuProductCard :item="product">
+        <template #action>
+            <UiButton icon="i-lucide-plus" color="primary" size="sm" @click="onAdd">
+                В корзину
+            </UiButton>
+        </template>
+    </MenuProductCard>
 </template>

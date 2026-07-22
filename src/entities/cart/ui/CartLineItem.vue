@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import type { CartItem } from '../model/types'
 import { MENU_CATEGORY_ICON, MENU_CATEGORY_LABEL } from '@entities/menu'
-import { formatPrice, UiButton, UiIcon } from '@shared'
+import { formatPrice, UiIcon } from '@shared'
 
 defineProps<{
     item: CartItem
-}>()
-
-defineEmits<{
-    increment: []
-    decrement: []
-    remove: []
 }>()
 </script>
 
@@ -33,36 +27,14 @@ defineEmits<{
         </div>
 
         <div class="flex items-center gap-1">
-            <UiButton
-                icon="i-lucide-minus"
-                color="neutral"
-                variant="soft"
-                size="sm"
-                square
-                @click="$emit('decrement')"
-            />
+            <slot name="decrement" />
             <span class="w-8 text-center text-sm font-semibold">{{ item.quantity }}</span>
-            <UiButton
-                icon="i-lucide-plus"
-                color="neutral"
-                variant="soft"
-                size="sm"
-                square
-                @click="$emit('increment')"
-            />
+            <slot name="increment" />
         </div>
 
         <div class="hidden w-24 text-right sm:block">
             <p class="font-semibold">{{ formatPrice(item.price * item.quantity) }}</p>
-            <UiButton
-                color="neutral"
-                variant="link"
-                size="xs"
-                class="px-0"
-                @click="$emit('remove')"
-            >
-                Удалить
-            </UiButton>
+            <slot name="remove" />
         </div>
     </div>
 </template>

@@ -29,6 +29,7 @@
         "pages/**/*",
         "src/**/*",
         "server/**/*",
+        ".storybook/**/*",
         "vite.config.ts"
     ],
     "exclude": ["node_modules", "dist"]

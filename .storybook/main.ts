@@ -7,7 +7,9 @@ const config: StorybookConfig = {
     stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
     addons: [
         '@chromatic-com/storybook',
-        '@storybook/addon-vitest',
+        // @storybook/addon-vitest: отключён — в SB 10.5 ломает Docs
+        // (Illegal invocation на HTMLElement.focus). Вернуть после фикса upstream.
+        // https://github.com/storybookjs/storybook/issues/35503
         '@storybook/addon-a11y',
         '@storybook/addon-docs',
     ],
