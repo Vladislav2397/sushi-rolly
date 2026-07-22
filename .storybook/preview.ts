@@ -1,8 +1,8 @@
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
 import { createPinia } from 'pinia'
-import { UiToaster } from '../app/shared'
-import '../app/assets/css/main.css'
+import { UiToaster } from '../src/shared'
+import '../src/assets/css/main.css'
 
 setup((app) => {
     app.use(createPinia())

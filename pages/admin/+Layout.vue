@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { usePageContext } from 'vike-vue/usePageContext'
 import { AdminShell } from '@widgets/admin-shell'
 import { UiToaster } from '@shared'
-import '../../app/assets/css/main.css'
+import '../../src/assets/css/main.css'
 
 const pageContext = usePageContext()
 const isLogin = computed(() => pageContext.urlPathname === '/admin/login')

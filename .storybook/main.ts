@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { mergeConfig } from 'vite'
 
 const config: StorybookConfig = {
-    stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+    stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
     addons: [
         '@chromatic-com/storybook',
         '@storybook/addon-vitest',
@@ -20,11 +20,11 @@ const config: StorybookConfig = {
             plugins: [tailwindcss()],
             resolve: {
                 alias: {
-                    '@shared': fileURLToPath(new URL('../app/shared', import.meta.url)),
-                    '@entities': fileURLToPath(new URL('../app/entities', import.meta.url)),
-                    '@features': fileURLToPath(new URL('../app/features', import.meta.url)),
-                    '@widgets': fileURLToPath(new URL('../app/widgets', import.meta.url)),
-                    '@pages': fileURLToPath(new URL('../app/pages', import.meta.url)),
+                    '@shared': fileURLToPath(new URL('../src/shared', import.meta.url)),
+                    '@entities': fileURLToPath(new URL('../src/entities', import.meta.url)),
+                    '@features': fileURLToPath(new URL('../src/features', import.meta.url)),
+                    '@widgets': fileURLToPath(new URL('../src/widgets', import.meta.url)),
+                    '@pages': fileURLToPath(new URL('../src/pages', import.meta.url)),
                     'vike/client/router': fileURLToPath(
                         new URL('./mocks/vike-router.ts', import.meta.url),
                     ),

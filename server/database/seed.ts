@@ -4,8 +4,8 @@ import {
     MENU_ROLLS,
     MENU_SETS,
     MENU_SUSHI,
-} from '../../app/entities/menu/model/menu-data'
-import type { MenuProduct, MenuSet } from '../../app/entities/menu/model/types'
+} from '../../src/entities/menu/model/menu-data'
+import type { MenuProduct, MenuSet } from '../../src/entities/menu/model/types'
 import { createStandaloneDb } from './standalone'
 import { menuItems } from './schema'
 

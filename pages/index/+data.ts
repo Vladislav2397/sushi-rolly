@@ -3,7 +3,7 @@ export type Data = Awaited<ReturnType<typeof data>>
 
 import type { PageContextServer } from 'vike/types'
 import { asc } from 'drizzle-orm'
-import type { ApiMenuResponse } from '../../app/shared/api/types'
+import type { ApiMenuResponse } from '../../src/shared/api/types'
 import { useDb, schema } from '../../server/database/client'
 
 async function data(_pageContext: PageContextServer): Promise<{ menu: ApiMenuResponse | null }> {

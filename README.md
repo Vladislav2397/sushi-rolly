@@ -54,7 +54,7 @@ npm run dev
 ## Структура (FSD)
 
 ```
-app/
+src/
   pages/          # маршруты
   widgets/        # header, menu-catalog, cart-panel, orders-list
   features/       # auth-by-phone, add-to-cart, checkout
